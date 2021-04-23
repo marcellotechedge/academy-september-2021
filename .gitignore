@@ -2,3 +2,6 @@
 .idea
 .vscode
 node_modules
+/web-api-python/venv
+/web-api-python/.idea
+/web-api-python/.vscode
