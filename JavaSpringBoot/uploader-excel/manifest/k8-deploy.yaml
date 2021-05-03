@@ -1,0 +1,73 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: __app_name__
+  labels:
+    app: __app_name__ 
+spec:
+  selector:
+    app: __app_name__
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080  
+  
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: __app_name__
+spec:
+  selector:
+      matchLabels:
+        app: __app_name__
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: __app_name__
+    spec:
+      imagePullSecrets:
+        - name: azureregcred
+      volumes:
+        - name: config-volume
+          configMap: 
+            name: uploader-excel-parser-config
+        
+      containers:
+        - name: __app_name__
+          image: tecsdockerimages.azurecr.io/eco2/__app_name__:__commit_id__
+          volumeMounts:
+            - name: config-volume
+              mountPath: /appl/parser/configuration
+         
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always
+          env:
+            - name: APP_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: username
+            - name: APP_DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: password
+            - name: 'db.host'
+              valueFrom:
+                configMapKeyRef:
+                  name: uploader-excel-config
+                  key: db.host                          
+            - name: db.port
+              valueFrom:
+                configMapKeyRef:
+                  name: uploader-excel-config
+                  key: db.port      
+            - name: db.service
+              valueFrom:
+                configMapKeyRef:
+                  name: uploader-excel-config
+                  key: db.service                   
+                                     
