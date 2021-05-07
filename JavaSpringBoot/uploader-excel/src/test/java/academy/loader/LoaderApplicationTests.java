@@ -10,11 +10,14 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import academy.loader.model.Data;
 import academy.loader.parse.ExcelDataParser;
@@ -27,6 +30,8 @@ import academy.loader.service.DataParserService;
 @ActiveProfiles("unit-test")
 class LoaderApplicationTests {
 
+	private static Logger log = LogManager.getLogger();
+	
 	@Test
 	void contextLoads() {
 	}
@@ -41,8 +46,8 @@ class LoaderApplicationTests {
 	
 	@Test
 	public void test2() throws IOException, LoaderException {
-		String path= this.getClass().getClassLoader().getResource("configuration.json").getPath();
-		InputStream is= this.getClass().getClassLoader().getResourceAsStream("OFF_CON_EXT2004434.xls");
+		String path= this.getClass().getClassLoader().getResource("configurationCovid.json").getPath();
+		InputStream is= this.getClass().getClassLoader().getResourceAsStream("CaseDistribution.xls");
 		
 		File f= new File(path);
 		String content = new String ( Files.readAllBytes( Paths.get(f.getAbsolutePath()) ) );
@@ -50,7 +55,12 @@ class LoaderApplicationTests {
 			
 		parser.setParserConfiguration(c);
 		Data data = parser.parse("OFF_CON_EXT2004434.xls",is);
+		
 		assertNotNull(data);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		String json=mapper.writerWithDefaultPrettyPrinter().writeValueAsString(data);
+		log.info("JSON:"+json);
 	}
 	
 	@Test
