@@ -10,9 +10,9 @@ class CaseDistributionRepository:
 
     def get_case(self, case_id):
         session_factory = sessionmaker(bind=self.db_engine)
-        session = session_factory()
-        data = session.query(Casedistribution).get(case_id)
-        return self.__get_case_dict(data)
+        with session_factory() as session:
+            data = session.query(Casedistribution).get(case_id)
+            return self.__get_case_dict(data)
 
     def get_cases(self, from_date, to_date, country):
         session_factory = sessionmaker(bind=self.db_engine)
@@ -26,6 +26,7 @@ class CaseDistributionRepository:
             query = query.filter(Casedistribution.YearWeek <= to_date)
         data = query.order_by(Casedistribution.YearWeek).all()
         result = [self.__get_case_dict(item) for item in data]
+        session.close()
         return result
 
 
@@ -38,6 +39,7 @@ class CaseDistributionRepository:
             Casedistribution.CountriesAndTerritories
         ).distinct().all()
         result = [self.__get_country_dict(item) for item in data]
+        session.close()
         return result
 
 
@@ -57,6 +59,7 @@ class CaseDistributionRepository:
         )
         session.add(case)
         session.commit()
+        session.close()
         return {
             "state": "Success",
             "message": "Case created successfully"
@@ -90,6 +93,7 @@ class CaseDistributionRepository:
         data.NotificationRate=case_data["notificationRate"]
 
         session.commit()
+        session.close()
         return {
             "state": "Success",
             "message": "Case updated successfully"
@@ -109,6 +113,7 @@ class CaseDistributionRepository:
         session.delete(data)
 
         session.commit()
+        session.close()
         return {
             "state": "Success",
             "message": "Case deleted successfully"
@@ -138,15 +143,16 @@ class CaseDistributionRepository:
             Casedistribution.CountriesAndTerritories,
             Casedistribution.ContinentExp).all()
         result = [self.__get_case_summary_dict(item) for item in data]
+        session.close()
         return result
 
 
     def __get_case_dict(self, sql_alchemy_item):
         return {
             "id": sql_alchemy_item.Id,
-            "dateRep": sql_alchemy_item.YearWeek.strftime("%Y-%m-%d:%H:%M:%S"),
-            "dateRepString": sql_alchemy_item.YearWeek.strftime("%Y-%m-%d"),
-            "yearWeek": sql_alchemy_item.YearWeek.strftime("%Y-%m"),
+            "dateRep": sql_alchemy_item.YearWeek.strftime("%Y-%m-%d:%H:%M:%S") if sql_alchemy_item.YearWeek else None,
+            "dateRepString": sql_alchemy_item.YearWeek.strftime("%Y-%m-%d") if sql_alchemy_item.YearWeek else None,
+            "yearWeek": sql_alchemy_item.YearWeek.strftime("%Y-%m") if sql_alchemy_item.YearWeek else None,
             "casesWeekly": sql_alchemy_item.CasesWeekly,
             "deathsWeekly": sql_alchemy_item.DeathsWeekly,
             "countryCode": sql_alchemy_item.CountryTerritoryCode,
