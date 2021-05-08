@@ -3,8 +3,9 @@ package com.te.accademy.webapi.repo;
 import java.util.Date;
 import java.util.List;
 
-import com.te.accademy.webapi.datamodel.view.CaseDetail;
-import com.te.accademy.webapi.datamodel.view.CaseSummary;
+import com.te.accademy.webapi.datamodel.CaseDetail;
+import com.te.accademy.webapi.datamodel.CaseSummary;
+
 
 public interface CaseSummaryCustomQuery {
 

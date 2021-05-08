@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.te.accademy.webapi.datamodel.CaseDetail;
 import com.te.accademy.webapi.datamodel.CaseDistribution;
-import com.te.accademy.webapi.datamodel.view.CaseDetail;
-import com.te.accademy.webapi.datamodel.view.CaseSummary;
+import com.te.accademy.webapi.datamodel.CaseSummary;
+import com.te.accademy.webapi.datamodel.Country;
 import com.te.accademy.webapi.repo.CaseDistributionRepository;
-import com.te.accademy.webapi.repo.CaseDistributionRepository.Country;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -47,8 +49,13 @@ public class CaseDistroController {
 
 	@ApiOperation(value = "Get CaseDistribution entry")
 	@GetMapping("/case/{case_id}")
-	public CaseDetail getCaseById(@PathVariable Integer case_id) {
-		return caseDistributionRepository.findCaseById(case_id);
+	public ResponseEntity<CaseDetail> getCaseById(@PathVariable Integer case_id) {
+		CaseDetail result = caseDistributionRepository.findCaseById(case_id);
+		if (result != null) {
+			return new ResponseEntity<CaseDetail>(result, HttpStatus.OK);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@ApiOperation(value = "Search CaseDistribution entries")

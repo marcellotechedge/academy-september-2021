@@ -13,9 +13,9 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.util.StringUtils;
 
+import com.te.accademy.webapi.datamodel.CaseDetail;
 import com.te.accademy.webapi.datamodel.CaseDistribution;
-import com.te.accademy.webapi.datamodel.view.CaseDetail;
-import com.te.accademy.webapi.datamodel.view.CaseSummary;
+import com.te.accademy.webapi.datamodel.CaseSummary;
 import com.te.accademy.webapi.repo.CaseSummaryCustomQuery;
 
 public class CaseSummaryCustomQueryImpl implements CaseSummaryCustomQuery {

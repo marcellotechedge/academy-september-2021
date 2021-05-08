@@ -1,4 +1,4 @@
-package com.te.accademy.webapi.datamodel.view;
+package com.te.accademy.webapi.datamodel;
 
 import java.math.BigInteger;
 import java.util.Date;

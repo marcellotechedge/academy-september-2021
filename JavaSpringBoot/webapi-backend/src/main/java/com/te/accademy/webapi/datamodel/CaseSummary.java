@@ -1,8 +1,6 @@
-package com.te.accademy.webapi.datamodel.view;
+package com.te.accademy.webapi.datamodel;
 
-import java.io.Serializable;
-
-public class CaseSummary implements Serializable {
+public class CaseSummary {
 
 	private String countryCode;
 

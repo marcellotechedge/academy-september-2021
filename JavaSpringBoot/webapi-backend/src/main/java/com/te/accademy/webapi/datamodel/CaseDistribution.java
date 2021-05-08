@@ -1,28 +1,24 @@
 package com.te.accademy.webapi.datamodel;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-/**
- * The persistent class for the casedistribution database table.
- * 
- */
 @Entity
 @Table(name = "casedistribution")
-public class CaseDistribution implements Serializable {
-	private static final long serialVersionUID = 1L;
+public class CaseDistribution {
 
 	@Id
 	@Column(unique = true, nullable = false)
+	@GeneratedValue
 	private int id;
 
 	@Column(name = "casesweekly")
@@ -131,10 +127,6 @@ public class CaseDistribution implements Serializable {
 
 	public void setYearWeek(Date yearWeek) {
 		this.yearWeek = yearWeek;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }
