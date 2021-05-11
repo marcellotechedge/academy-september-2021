@@ -1,0 +1,20 @@
+{
+	"sheets":{
+
+			"Europe":{
+					"A1": "country",
+					"B1": "date",
+					"C1": "notificationRate",
+					"D1": "casesWeekly",
+					"E1": "deathsWeekly"
+			},
+			"Africa":{
+					"A1": "country",
+					"B1": "date",
+					"C1": "notificationRate",
+					"D1": "casesWeekly",
+					"E1": "deathsWeekly"
+			}	
+	}
+	
+}

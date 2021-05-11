@@ -24,9 +24,10 @@ def convert_date(date_text):
     else:
         return None
 
+@app.route('/')
 @app.route('/web-api')
 def index():
-    return "Techedge Academy - February 2021 - v1.4"
+    return "Techedge Academy - February 2021 - v1.5"
 
 
 @app.route('/web-api/case', methods=["GET"])
@@ -40,12 +41,14 @@ def get_cases():
 
 @app.route('/web-api/case/<int:case_id>', methods=["GET"])
 def get_case(case_id):
+    print("[GET] Case")
     result = case_distribution_repository.get_case(case_id)
     return jsonify(result)
 
 
 @app.route('/web-api/case-summary', methods=["GET"])
 def get_case_summary():
+    print("[GET] Case Summary")
     from_date = convert_date(request.args.get('from'))
     to_date = convert_date(request.args.get('to'))
     country = request.args.get('country')
@@ -55,6 +58,7 @@ def get_case_summary():
 
 @app.route('/web-api/case', methods=["POST"])
 def post_case():
+    print("[POST] Case")
     case_data = request.json
     result = case_distribution_repository.insert_case(case_data)
     return jsonify(result)
@@ -62,6 +66,7 @@ def post_case():
 
 @app.route('/web-api/case', methods=["PUT"])
 def put_case():
+    print("[PUT] Case")
     case_data = request.json
     result = case_distribution_repository.update_case(case_data)
     return jsonify(result)
@@ -69,12 +74,14 @@ def put_case():
 
 @app.route('/web-api/case/<int:case_id>', methods=["DELETE"])
 def delete_case(case_id):
+    print("[DELETE] Case")
     result = case_distribution_repository.delete_case(case_id)
     return jsonify(result)
 
 
 @app.route('/web-api/countries', methods=["GET"])
 def get_countries():
+    print("[GET] Countries")
     result = case_distribution_repository.get_countries()
     return jsonify(result)
 
@@ -88,9 +95,12 @@ def handle_exception(e):
     print(traceback.format_exc())
     return {
         "state": "Failed",
-        "message": "Unexpected server error"
+        "message": "Unexpected server error",
+        "e": str(e),
+        "traceback": str(traceback.format_exc())
     }, 500
 
 
 if __name__ == '__main__':
+    print("[START] Running application")
     app.run(debug=True)
