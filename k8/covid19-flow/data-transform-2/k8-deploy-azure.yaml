@@ -1,12 +1,12 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: data-transform
+  name: data-transform2
   labels:
-    app: data-transform 
+    app: data-transform2 
 spec:
   selector:
-    app: data-transform
+    app: data-transform2
   ports:
   - protocol: TCP
     port: 4000
@@ -17,22 +17,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: data-transform
+  name: data-transform2
 spec:
   selector:
       matchLabels:
-        app: data-transform
+        app: data-transform2
   replicas: 1
   template:
     metadata:
       labels:
-        app: data-transform
+        app: data-transform2
     spec:
       imagePullSecrets:
         - name: regcred      
       containers:
-        - name: data-transform
-          image: techedgeopensource.azurecr.io/academy/data-transform:pd
+        - name: data-transform2
+          image: techedgeopensource.azurecr.io/academy/data-transform2:pd
           env:
           - name: PYTHONUNBUFFERED
             value: "0"          

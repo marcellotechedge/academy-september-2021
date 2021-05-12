@@ -6,19 +6,12 @@ spec:
   rules:
   - http:
       paths:
-      - path: /data
+      - path: /rate100
         backend:
           serviceName: data-transform
           servicePort: 4000
-      - path: /graph
+      - path: /rate-month
         backend:
-          serviceName: data-transform
+          serviceName: data-transform2
           servicePort: 4000
-      - path: /bycountry
-        backend:
-          serviceName: data-selector
-          servicePort: 4000
-      - path: /graphbycountry
-        backend:
-          serviceName: data-selector
-          servicePort: 4000
+

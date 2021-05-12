@@ -18,8 +18,8 @@ class DataTransformer:
         print("Connecting exchange")
         self.credentials = pika.PlainCredentials("guest", "guest")
         self.connection_params = pika.ConnectionParameters(
-            #host="rabbitmq-service", credentials=self.credentials)
-        host="localhost", virtual_host="/", credentials=self.credentials)
+            host="rabbitmq-service", credentials=self.credentials)
+        #host="localhost", virtual_host="/", credentials=self.credentials)
         self.connection = pika.BlockingConnection(self.connection_params)
         self.channel = self.connection.channel()
         result = self.channel.queue_declare(queue='')
@@ -69,7 +69,7 @@ def start_consumer():
     transformer.init()
 
 
-@app.route('/data', methods=['GET', 'POST'])
+@app.route('/rate-month', methods=['GET', 'POST'])
 def get_data():
     with open("/tmp/covid-world.json") as json_file:
         data = json_file.read()
