@@ -1,48 +1,69 @@
 import express from 'express';
-import { getConnection } from 'typeorm';
+import * as caseController from '../controller/CaseController';
 import { CaseDistribution } from '../models/CaseDistribution';
 
 let router = express.Router();
 
 router.get("/", async (req: any, res: any) => {
-    console.log("Query in /case", req.query);
-    let results = await getConnection().manager.find(CaseDistribution);
+    console.log(`[get case] query param ${req.query}`);
+
+    let { from, to, country } = req.query;
+
+    let results: CaseDistribution[] = await caseController.getCase(from, to, country);
+
+    console.log(`[get case] end`);
+
     res.send(results);
+    return;
 });
 
 
 router.get("/:id", async (req: any, res: any) => {
-    let id : string = req.params.id;
-    let results = await getConnection().manager.findOne(CaseDistribution, id);
-    res.send(results);
+    console.log(`[get case by id] id ${req.params}`);
+
+    const { id } = req.params;
+
+    let result: CaseDistribution = await caseController.getCaseById(id);
+
+    console.log(`[get case by id] end`);
+
+    res.send(result);
+    return;
 });
 
 
 router.post("/", async (req: any, res: any) => {
-    console.log("Body from /base", req.body);
-    let newcase = new CaseDistribution();
-    newcase.yearWeek = req.body.yearWeek;
-    newcase.casesWeekly = req.body.casesWeekly;
-    newcase.continentExp = req.body.continentExp;
-    newcase.countriesAndTerritories = req.body.countriesAndTerritories;
-    newcase.geoId = req.body.geoId;
-    newcase.countryTerritoryCode = req.body.countryTerritoryCode;
-    newcase.popData2019 = req.body.popData2019;
-    newcase.continentExp = req.body.continentExp;
-    newcase.notificationRate = req.body.notificationRate;
-    newcase.tsInsert = req.body.tsInsert;
-    newcase.tsUpdate = req.body.tsUpdate;
-    let results = await getConnection().manager.save(newcase);
-    console.log("result", results);
-    res.send(results);
+    console.log(`[post case] start`);
+
+    let result: CaseDistribution = await caseController.insertCaseById(req.body);
+
+    console.log(`[post case] end`);
+
+    res.send(result);
+    return;
 });
 
-router.put("/", (req: any, res: any) => {
-    res.send("xxx");
+router.put("/", async (req: any, res: any) => {
+    console.log(`[put case] start`);
+
+    let result: CaseDistribution = await caseController.updateCaseById(req.body);
+
+    console.log(`[put case] end`);
+
+    res.send(result);
 });
 
-router.delete("/", (req: any, res: any) => {
-    res.send("xxx");
+router.delete("/:id", async (req: any, res: any) => {
+    console.log(`[delete case by id] id ${req.params}`);
+
+    const { id } = req.params;
+
+    let result: any = await caseController.deleteCaseById(id);
+
+    console.log(`[delete case by id] end`);
+
+    res.send(result);
+    return;
 });
 
 export default router;
