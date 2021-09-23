@@ -1,0 +1,34 @@
+.covid-app-form, .covid-app-form-small {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-end;
+    padding: 32px 16px;
+    margin: 16px;
+    border: 1px solid var(--surface-border);
+    background-color: var(--surface-ground);
+    border-radius: var(--border-radius);
+
+    .covid-app-field {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+}
+
+.covid-app-form-small {
+    padding: 16px 8px;
+}
+
+@media screen and (max-width: 978px) {
+    .covid-app-form, .covid-app-form-small {
+        flex-direction: column;
+        align-items: center;
+
+        .covid-app-field {
+            align-items: center;
+            margin-bottom: 16px;
+        }
+    }
+}
