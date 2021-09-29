@@ -8,12 +8,13 @@ import { fetchCountriesList } from '../../store/actions/countryActions';
 
 export type SelectCountryProps = {
     className?: string,
+    disabled?: boolean,
     style?: React.CSSProperties,
     value?: any,
     onChange: (value: any) => void
 }
 
-export const SelectCountry: React.FC<SelectCountryProps> = ({ className, style, value, onChange }) => {
+export const SelectCountry: React.FC<SelectCountryProps> = ({ className, disabled, style, value, onChange }) => {
     const dispatch = useAppDispatch();
     const countryState = useAppSelector(state => state.country);
     const toast = useRef<Toast>(null);
@@ -55,6 +56,7 @@ export const SelectCountry: React.FC<SelectCountryProps> = ({ className, style, 
                 optionValue="code"
                 onChange={(e) => onChange(e.value)} 
                 placeholder="Select a Country"
+                disabled={disabled}
             />
         </>
     );

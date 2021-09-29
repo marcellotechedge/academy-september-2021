@@ -2,26 +2,27 @@ import { createReducer } from '@reduxjs/toolkit'
 import { fetchCovidData, setCovidStatus } from '../actions/covidActions'
 import { APIStatus } from '../axiosConfiguration';
 
-export type CaseDistribution = {
-    id: number,
-    yearWeek: Date,
+export type CovidData = {
+    countryCode: string,
+    yearWeek: number,
     casesWeekly: number,
     deathsWeekly: number,
-    countriesAndTerritories: string,
-    geoId: string,
-    countryTerritoryCode: string,
-    popData2019: number,
-    continentExp: string,
-    notificationRate: number,
-    tsInsert: Date,
-    tsUpdate: Date
+    average: number
+}
+
+export type SummaryData = {
+    country: string,
+    countryCode: string,
+    continent: string,
+    totalCase: string,
+    totalDeaths: string
 }
 
 export type CovidState = {
     status: APIStatus,
     error: boolean,
-    data: CaseDistribution[],
-    summary: unknown[]
+    data: CovidData[],
+    summary: SummaryData[]
 }
 
 const initialState: CovidState = {

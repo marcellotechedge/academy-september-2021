@@ -10,7 +10,6 @@ import { performLogout } from '../../store/actions/authActions';
 export const AppHeader: React.FC = () => {
     const history = useHistory();
     const dispatch = useAppDispatch();
-    const isCovidStateEmpty = useAppSelector(state => !state.covid.data.length && !state.covid.summary.length );
     const isUserLogged = useAppSelector(state => state.auth.status === APIStatus.READY);
 
     const menuItems: MenuItem[] = [
@@ -25,7 +24,7 @@ export const AppHeader: React.FC = () => {
         {
             label: "Dashboard",
             icon: "pi pi-chart-bar",
-            disabled: isCovidStateEmpty,
+            disabled: false,
             command: () => history.push('/dashboard')
         },
         {

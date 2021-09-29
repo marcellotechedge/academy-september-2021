@@ -1,12 +1,12 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios, { APIStatus } from '../axiosConfiguration';
-import { CaseDistribution } from "../reducers/covidReducer";
+import { CovidData } from "../reducers/covidReducer";
 import { endLayoutLoading, startLayoutLoading } from "./layoutActions";
 
 export const setBackofficeStatus = createAction<APIStatus>('backoffice/setStatus');
 
 export const postNewCases = createAsyncThunk<
-    CaseDistribution, 
+    CovidData, 
     { continent: string, country: string, weeklyCases: number, weeklyDeaths: number, notificationRate: number }
 >(
     'backoffice/postNewCases',
@@ -14,7 +14,7 @@ export const postNewCases = createAsyncThunk<
         thunkApi.dispatch(startLayoutLoading());
 
         try {
-            const response = await axios.post<CaseDistribution>(`/case`, args);
+            const response = await axios.post<CovidData>(`/case`, args);
             thunkApi.dispatch(endLayoutLoading());
             return response.data;
         } catch (error) {

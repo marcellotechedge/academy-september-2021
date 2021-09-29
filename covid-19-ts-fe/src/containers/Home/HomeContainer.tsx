@@ -63,7 +63,10 @@ export const HomeContainer: React.FC = () => {
     useEffect(() => {
         if ( covidState.status === APIStatus.READY ) {
             dispatch(setCovidStatus(APIStatus.IDLE));
-            history.push('/dashboard');
+            history.push({
+                pathname: '/dashboard',
+                state: { selectedCountry: selectedCountry }
+            });
         }
     }, [ covidState.status ]);
 
