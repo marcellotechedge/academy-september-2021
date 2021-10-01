@@ -8,7 +8,7 @@ export const setCovidStatus = createAction<APIStatus>('covid/setStatus');
 
 export const fetchCovidData = createAsyncThunk<
     { data: CovidState["data"], summary: CovidState["summary"] }, 
-    { dateFrom: string, dateTo: string, country?: string }
+    { dateFrom?: string, dateTo?: string, country?: string }
 >(
   'covid/fetchCovidData',
   async ({ dateFrom, dateTo, country}, thunkApi) => {
@@ -16,8 +16,11 @@ export const fetchCovidData = createAsyncThunk<
   
     try {
         let params = new URLSearchParams();
-        params.append('from', dateFrom);
-        params.append('to', dateTo);
+        if ( dateFrom )
+          params.append('from', dateFrom);
+
+        if ( dateTo )
+          params.append('to', dateTo);
 
         if ( country )
             params.append('country', country);

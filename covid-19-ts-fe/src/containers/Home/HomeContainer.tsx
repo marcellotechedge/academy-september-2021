@@ -24,7 +24,7 @@ export const HomeContainer: React.FC = () => {
         if ( toast.current === null ) 
             return;
 
-        if (typeof dateFrom === "undefined" || typeof dateTo === "undefined" || dateFrom > dateTo) {
+        if (typeof dateFrom !== "undefined" && typeof dateTo !== "undefined" && dateFrom > dateTo) {
             toast.current.show({
                 severity: 'error',
                 contentClassName: "home-toast",
@@ -38,8 +38,8 @@ export const HomeContainer: React.FC = () => {
         }
 
         dispatch(fetchCovidData({
-            dateFrom: dayjs(dateFrom).format("DD/MM/YYYY"), 
-            dateTo: dayjs(dateTo).format("DD/MM/YYYY"),
+            dateFrom: dateFrom ? dayjs(dateFrom).format("DD/MM/YYYY") : undefined, 
+            dateTo: dateFrom ? dayjs(dateTo).format("DD/MM/YYYY") : undefined,
             country: selectedCountry
         }))
     }
@@ -121,7 +121,7 @@ export const HomeContainer: React.FC = () => {
                         <Button
                         label="Search"
                         onClick={handleSearch}
-                        disabled={!dateFrom || !dateTo}
+                        disabled={typeof selectedCountry === "undefined"}
                         />
                     </div>
                 </div>
