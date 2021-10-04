@@ -19,6 +19,7 @@ export const DashboardContainer: React.FC = () => {
     const location = useLocation<{ selectedCountry?: string }>();
     const history = useHistory();
     const { data: covidData, summary: covidSummary } = useAppSelector(state => state.covid);
+    const countryState = useAppSelector(state => state.country);
     const [ selectFirstCountry, setSelectFirstCountry ] = useState<string>();
     const [ selectSecondCountry, setSelectSecondCountry ] = useState<string>();
     const [ selectThirdCountry, setSelectThirdCountry ] = useState<string>();
@@ -113,6 +114,7 @@ export const DashboardContainer: React.FC = () => {
                     <label>First Country</label>
                     <div>
                         <SelectCountry 
+                            countries={countryState.countries}
                             value={selectFirstCountry} 
                             onChange={setSelectFirstCountry} 
                             style={{ minWidth: 222 }}
@@ -125,6 +127,7 @@ export const DashboardContainer: React.FC = () => {
                     <label>Second Country</label>
                     <div>
                         <SelectCountry 
+                            countries={countryState.countries}
                             value={selectSecondCountry} 
                             onChange={setSelectSecondCountry} 
                             style={{ minWidth: 222 }}
@@ -137,6 +140,7 @@ export const DashboardContainer: React.FC = () => {
                     <label>First Country</label>
                     <div>
                         <SelectCountry 
+                            countries={countryState.countries}
                             value={selectThirdCountry} 
                             onChange={setSelectThirdCountry} 
                             style={{ minWidth: 222 }}

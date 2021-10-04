@@ -11,21 +11,21 @@ export const AppRouting: React.FC = () => {
     return (
         <BrowserRouter>
             <Switch>
-            <Route path="/" exact>
-                <HomeContainer />
-            </Route>
-            <Route path="/dashboard" exact>
-                <DashboardContainer />
-            </Route>
-            <Route path="/back-office" exact>
-                <BackOfficeContainer />
-            </Route>
-            <PrivateRoute path="/back-office/home" exact>
-                <BackOfficeHomeContainer />
-            </PrivateRoute>
-            <Route path="*">
-                <NotFoundContainer />
-            </Route>
+                <Route path="/" exact>
+                    <HomeContainer />
+                </Route>
+                <Route path="/dashboard" exact>
+                    <DashboardContainer />
+                </Route>
+                <Route path="/back-office" exact>
+                    <BackOfficeContainer />
+                </Route>
+                <PrivateRoute path="/back-office/home" exact>
+                    <BackOfficeHomeContainer />
+                </PrivateRoute>
+                <Route path="*">
+                    <NotFoundContainer />
+                </Route>
             </Switch>
         </BrowserRouter>
     )

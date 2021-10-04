@@ -10,11 +10,13 @@ import { APIStatus } from '../../store/axiosConfiguration';
 import { useAppDispatch, useAppSelector } from '../../store/storeConfiguration';
 import { fetchCovidData, setCovidStatus } from '../../store/actions/covidActions';
 import { AppHeader } from '../../components/AppHeader/AppHeader';
+import { fetchCountriesList } from '../../store/actions/countryActions';
 
 export const HomeContainer: React.FC = () => {
     const dispatch = useAppDispatch();
     const history = useHistory();
     const covidState = useAppSelector(state => state.covid);
+    const countryState = useAppSelector(state => state.country);
     const [ selectedCountry, setSelectedCountry ] = useState();
     const [ dateFrom, setDateFrom ] = useState<Date>();
     const [ dateTo, setDateTo ] = useState<Date>();
@@ -45,6 +47,11 @@ export const HomeContainer: React.FC = () => {
     }
 
     useEffect(() => {
+        if ( !countryState.loaded )
+            dispatch(fetchCountriesList());
+    }, [])
+
+    useEffect(() => {
         if ( toast.current === null ) 
             return;
 
@@ -59,7 +66,7 @@ export const HomeContainer: React.FC = () => {
             });
         }
     }, [ covidState.error ])
-
+    
     useEffect(() => {
         if ( covidState.status === APIStatus.READY ) {
             dispatch(setCovidStatus(APIStatus.IDLE));
@@ -70,6 +77,26 @@ export const HomeContainer: React.FC = () => {
         }
     }, [ covidState.status ]);
 
+    useEffect(() => {
+        if ( toast.current === null ) return;
+
+        if ( countryState.error ) {
+            toast.current.show({
+                severity: 'error',
+                contentClassName: "select-country-toast",
+                content: (
+                    <ToastContent message="Error while loading countries." action={
+                        <Button type="button" label="Retry" className="p-button-secondary" 
+                            onClick={() => dispatch(fetchCountriesList())}
+                        />
+                    } />
+                ),
+                sticky: true
+            });
+        }
+        else toast.current.clear();
+    }, [ countryState.error ])
+
     return (
         <div>
             <AppHeader />
@@ -79,6 +106,7 @@ export const HomeContainer: React.FC = () => {
                     <label>Country</label>
                     <div>
                         <SelectCountry 
+                            countries={countryState.countries}
                             value={selectedCountry} 
                             onChange={setSelectedCountry} 
                             style={{ minWidth: 222 }}
