@@ -6,11 +6,13 @@ import { Button } from 'primereact/button';
 import { APIStatus } from '../../store/axiosConfiguration';
 import { useAppDispatch, useAppSelector } from '../../store/storeConfiguration';
 import { performLogout } from '../../store/actions/authActions';
+import _ from "lodash";
 
 export const AppHeader: React.FC = () => {
     const history = useHistory();
     const dispatch = useAppDispatch();
     const isUserLogged = useAppSelector(state => state.auth.status === APIStatus.READY);
+    const { data: covidData, summary: covidSummary } = useAppSelector(state => state.covid);
 
     const menuItems: MenuItem[] = [
         {
@@ -24,7 +26,7 @@ export const AppHeader: React.FC = () => {
         {
             label: "Dashboard",
             icon: "pi pi-chart-bar",
-            disabled: false,
+            disabled: _.isEmpty(covidData) || _.isEmpty(covidSummary),
             command: () => history.push('/dashboard')
         },
         {
