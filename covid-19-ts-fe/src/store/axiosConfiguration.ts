@@ -3,7 +3,7 @@ import axios from "axios";
 export enum APIStatus { IDLE, PENDING, READY };
 
 export default axios.create({
-    baseURL: "http://localhost:3000/",
+    baseURL: "https://academy-2021-be-226760054.eu-west-1.elb.amazonaws.com",
     headers: {
       common: {
         "Accept": "application/json",
