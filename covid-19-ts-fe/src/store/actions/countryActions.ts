@@ -12,7 +12,7 @@ export const fetchCountriesList = createAsyncThunk<
         thunkApi.dispatch(startLayoutLoading());
     
         try {
-            const response = await axios.get<Country[]>(`/countries`)
+            const response = await axios.get<Country[]>(`/country`)
         
             thunkApi.dispatch(endLayoutLoading());
             return response.data;
