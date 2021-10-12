@@ -3,11 +3,18 @@ import { fetchCovidData, setCovidStatus } from '../actions/covidActions'
 import { APIStatus } from '../axiosConfiguration';
 
 export type CovidData = {
-    countryCode: string,
-    yearWeek: number,
     casesWeekly: number,
+    continentExp: string,
+    countriesAndTerritories: string,
+    countryTerritoryCode: string,
     deathsWeekly: number,
-    average: number
+    geoId: string,
+    id: string,
+    notificationRate: null,
+    popData2019: string,
+    tsInsert: string,
+    tsUpdate: string,
+    yearWeek: string
 }
 
 export type SummaryData = {

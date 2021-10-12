@@ -7,13 +7,19 @@ export type DatasetFields = {
 
 export const getDatasetCasesWeeklyBarChart = (covidData: CovidData[], countryCode: string): DatasetFields => {
     const aggregateData: Record<string, number> = {};
-    
-    covidData.filter(record => record.countryCode === countryCode).forEach(record => {
+
+    covidData.filter(record => record.countriesAndTerritories === countryCode).forEach(record => {
+        const date = new Date(record.yearWeek);
+        const recordLabel = 
+            date.getFullYear().toString().padStart(2, '0') + '-' + 
+            (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+            date.getDate().toString().padStart(2, '0')
+
         if ( aggregateData.hasOwnProperty(record.yearWeek) ) {
-            aggregateData[record.yearWeek] += record.casesWeekly;
+            aggregateData[recordLabel] += record.casesWeekly;
         }
         else {
-            aggregateData[record.yearWeek] = record.casesWeekly;
+            aggregateData[recordLabel] = record.casesWeekly;
         }
     });
 
@@ -26,30 +32,18 @@ export const getDatasetCasesWeeklyBarChart = (covidData: CovidData[], countryCod
 export const getDatasetDeathsWeeklyBarChart = (covidData: CovidData[], countryCode: string): DatasetFields => {
     const aggregateData: Record<string, number> = {};
     
-    covidData.filter(record => record.countryCode === countryCode).forEach(record => {
+    covidData.filter(record => record.countriesAndTerritories === countryCode).forEach(record => {
+        const date = new Date(record.yearWeek);
+        const recordLabel = 
+            date.getFullYear().toString().padStart(2, '0') + '-' + 
+            (date.getMonth() + 1).toString().padStart(2, '0') + '-' +
+            date.getDate().toString().padStart(2, '0')
+
         if ( aggregateData.hasOwnProperty(record.yearWeek) ) {
-            aggregateData[record.yearWeek] += record.deathsWeekly;
+            aggregateData[recordLabel] += record.deathsWeekly;
         }
         else {
-            aggregateData[record.yearWeek] = record.deathsWeekly;
-        }
-    });
-
-    return {
-        labels: Object.keys(aggregateData),
-        data: Object.keys(aggregateData).map(recordKey => aggregateData[recordKey])
-    };
-};
-
-export const getDatasetAverageLineChart = (covidData: CovidData[], countryCode: string): DatasetFields => {
-    const aggregateData: Record<string, number> = {};
-    
-    covidData.filter(record => record.countryCode === countryCode).forEach(record => {
-        if ( aggregateData.hasOwnProperty(record.yearWeek) ) {
-            aggregateData[record.yearWeek] = aggregateData[record.yearWeek] + record.average / 2;
-        }
-        else {
-            aggregateData[record.yearWeek] = record.average;
+            aggregateData[recordLabel] = record.deathsWeekly;
         }
     });
 

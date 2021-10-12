@@ -8,7 +8,7 @@ import { Chart } from 'primereact/chart';
 import { AppHeader } from '../../components/AppHeader/AppHeader';
 import SelectCountry from '../../components/SelectCountry/SelectCountry';
 import { useAppSelector } from '../../store/storeConfiguration';
-import { getDatasetAverageLineChart, getDatasetCasesWeeklyBarChart, getDatasetDeathsWeeklyBarChart } from './datasetsGenerator';
+import { getDatasetCasesWeeklyBarChart, getDatasetDeathsWeeklyBarChart } from './datasetsGenerator';
 
 export type ChartData = {
     labels: string[],
@@ -26,18 +26,15 @@ export const DashboardContainer: React.FC = () => {
     const [ disableSelect, setDisableSelect ] = useState<boolean>(false);
     const [casesWeeklyBarChartDataset, setCasesWeeklyBarChartDataset] = useState<ChartData>({ labels: [], datasets: [] });
     const [deathsWeeklyBarChartDataset, setDeathsWeeklyBarChartDataset] = useState<ChartData>({ labels: [], datasets: [] });
-    const [averageLineChartDataset, setAverageLineChartDataset] = useState<ChartData>({ labels: [], datasets: [] });
 
     const generateChartsDataset = (countryCode: string, datasetIndex: number) => {
         const chartColor = [ "#81030f", "#1e6003", "#e56118"];
 
         const newCasesWeeklyBarChartDataset: ChartData = _.cloneDeep(casesWeeklyBarChartDataset);
         const newDeathsWeeklyBarChartDataset: ChartData = _.cloneDeep(deathsWeeklyBarChartDataset);
-        const newAverageLineChartDataset: ChartData = _.cloneDeep(averageLineChartDataset);
 
         const { labels: casesLabels, data: casesData } = getDatasetCasesWeeklyBarChart(covidData, countryCode);
         const { labels: deathsLabels, data: deatshData } = getDatasetDeathsWeeklyBarChart(covidData, countryCode);
-        const { labels: averageLabels, data: averageData } = getDatasetAverageLineChart(covidData, countryCode);
 
         if ( _.isEmpty(newCasesWeeklyBarChartDataset.labels) )
             newCasesWeeklyBarChartDataset.labels = casesLabels;
@@ -45,10 +42,6 @@ export const DashboardContainer: React.FC = () => {
         if ( _.isEmpty(newDeathsWeeklyBarChartDataset.labels) )
             newDeathsWeeklyBarChartDataset.labels = deathsLabels;
         
-        if ( _.isEmpty(newAverageLineChartDataset.labels) )
-            newAverageLineChartDataset.labels = averageLabels;
-        
-
         newCasesWeeklyBarChartDataset.datasets[datasetIndex] = {
             label: countryCode,
             data: casesData,
@@ -61,16 +54,8 @@ export const DashboardContainer: React.FC = () => {
             backgroundColor: chartColor[datasetIndex]
         }
 
-        newAverageLineChartDataset.datasets[datasetIndex] = {
-            label: countryCode,
-            data: averageData,
-            fill: false,
-            borderColor: chartColor[datasetIndex]
-        };
-
         setCasesWeeklyBarChartDataset(newCasesWeeklyBarChartDataset);
         setDeathsWeeklyBarChartDataset(newDeathsWeeklyBarChartDataset);
-        setAverageLineChartDataset(newAverageLineChartDataset);
     }
 
     useEffect(() => {
@@ -111,47 +96,21 @@ export const DashboardContainer: React.FC = () => {
 
             <div className="covid-app-form">
                 <div className="covid-app-field">
-                    <label>First Country</label>
+                    <label>Selected Country</label>
                     <div>
                         <SelectCountry 
                             countries={countryState.countries}
                             value={selectFirstCountry} 
                             onChange={setSelectFirstCountry} 
                             style={{ minWidth: 222 }}
-                            disabled={disableSelect}
-                        />
-                    </div>
-                </div>
-
-                <div className="covid-app-field">
-                    <label>Second Country</label>
-                    <div>
-                        <SelectCountry 
-                            countries={countryState.countries}
-                            value={selectSecondCountry} 
-                            onChange={setSelectSecondCountry} 
-                            style={{ minWidth: 222 }}
-                            disabled={disableSelect}
-                        />
-                    </div>
-                </div>
-
-                <div className="covid-app-field">
-                    <label>First Country</label>
-                    <div>
-                        <SelectCountry 
-                            countries={countryState.countries}
-                            value={selectThirdCountry} 
-                            onChange={setSelectThirdCountry} 
-                            style={{ minWidth: 222 }}
-                            disabled={disableSelect}
+                            disabled={true}
                         />
                     </div>
                 </div>
             </div>
 
             <TabView>
-                <TabPanel key={0} header="Summary Country Table">
+                {/*<TabPanel key={0} header="Summary Country Table">
                     <DataTable
                         value={covidSummary}
                         paginator
@@ -167,14 +126,12 @@ export const DashboardContainer: React.FC = () => {
                         <Column field="totalDeaths" header="Total Deaths" />
                     </DataTable>
                 </TabPanel>
+                */}
                 <TabPanel key={1} header="Cases Weekly per Country">
                     <Chart type="bar" data={casesWeeklyBarChartDataset} />
                 </TabPanel>
                 <TabPanel key={2} header="Deaths Weekly per Country">
                     <Chart type="bar" data={deathsWeeklyBarChartDataset} />
-                </TabPanel>
-                <TabPanel key={3} header="Average per Country">
-                    <Chart type="line" data={averageLineChartDataset} />
                 </TabPanel>
             </TabView>
         </div>

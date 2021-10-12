@@ -1,10 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axiosConfiguration';
-import { Country } from "../reducers/countryReducer";
 import { endLayoutLoading, startLayoutLoading } from "./layoutActions";
 
 export const fetchCountriesList = createAsyncThunk<
-    Country[],
+    string[],
     void
 >(
     'country/fetchCountriesList',
@@ -12,7 +11,7 @@ export const fetchCountriesList = createAsyncThunk<
         thunkApi.dispatch(startLayoutLoading());
     
         try {
-            const response = await axios.get<Country[]>(`/country`)
+            const response = await axios.get<string[]>(`/country`)
         
             thunkApi.dispatch(endLayoutLoading());
             return response.data;

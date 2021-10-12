@@ -26,7 +26,7 @@ export const AppHeader: React.FC = () => {
         {
             label: "Dashboard",
             icon: "pi pi-chart-bar",
-            disabled: _.isEmpty(covidData) || _.isEmpty(covidSummary),
+            disabled: true,
             command: () => history.push('/dashboard')
         },
         {

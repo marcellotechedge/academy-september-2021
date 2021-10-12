@@ -1,9 +1,8 @@
 import React from 'react';
 import { Dropdown } from 'primereact/dropdown';
-import { Country } from '../../store/reducers/countryReducer';
 
 export type SelectCountryProps = {
-    countries: Country[],
+    countries: string[],
     className?: string,
     disabled?: boolean,
     style?: React.CSSProperties,
@@ -18,8 +17,6 @@ export const SelectCountry: React.FC<SelectCountryProps> = ({ className, countri
             style={style}
             value={value} 
             options={countries} 
-            optionLabel="country"
-            optionValue="code"
             onChange={(e) => onChange(e.value)} 
             placeholder="Select a Country"
             disabled={disabled}

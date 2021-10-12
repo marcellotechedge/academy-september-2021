@@ -1,15 +1,10 @@
 import { createReducer } from '@reduxjs/toolkit'
 import { fetchCountriesList } from '../actions/countryActions';
 
-export type Country = {
-    code: string,
-    country: string
-};
-
 export type CountryState = {
     error: boolean,
     loaded: boolean,
-    countries: Country[]
+    countries: string[]
 }
 
 const initialState: CountryState = {

@@ -1,7 +1,7 @@
 import { createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from '../axiosConfiguration';
 import { APIStatus } from "../axiosConfiguration";
-import { CovidState } from "../reducers/covidReducer";
+import { CovidData, CovidState } from "../reducers/covidReducer";
 import { endLayoutLoading, startLayoutLoading } from "./layoutActions";
 
 export const setCovidStatus = createAction<APIStatus>('covid/setStatus');
@@ -28,6 +28,8 @@ export const fetchCovidData = createAsyncThunk<
         const responseData = await axios.get<CovidState["data"]>(`/case?${params.toString()}`)
         const responseSummary = await axios.get<CovidState["summary"]>(`/case-summary?${params.toString()}`)
 
+        responseData.data.sort((a: CovidData, b: CovidData) => new Date(a.yearWeek).getTime() - new Date(b.yearWeek).getTime());
+        
         thunkApi.dispatch(endLayoutLoading());
         return { 
           data: responseData.data, 
